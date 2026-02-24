@@ -1,0 +1,411 @@
+/* ============================================
+   GOOGLE FONTS IMPORT
+   Importing Martel Sans and Poppins fonts
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap');
+
+
+/* ============================================
+   CSS RESET - Universal Selector
+   Removes default browser padding/margin
+   ============================================ */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box; /* Makes width/height include padding and border */
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* ============================================
+   BODY STYLES
+   ============================================ */
+body {
+    background-color: black;
+    min-width: 1200px;  /* FIXED MINIMUM WIDTH - Page won't shrink below this */
+}
+
+
+/* ============================================
+   MAIN HERO SECTION
+   Uses RELATIVE positioning as a container
+   ============================================ */
+.main {
+    /* Background image - Using LOCAL file from IMAGES folder */
+    background-image: url("IMAGES/bg.jpg");
+    
+    /* BACKGROUND POSITIONING */
+    background-position: center center; /* Centers the image horizontally and vertically */
+    background-size: 1200px;            /* FIXED SIZE - Not responsive */
+    background-repeat: no-repeat;       /* Prevents image from repeating */
+    
+    width: 100%;                        /* Full width of page */
+    min-width: 1200px;                  /* MINIMUM WIDTH - Prevents shrinking */
+    height: 644px;
+    
+    /* RELATIVE POSITIONING - Acts as reference for child elements */
+    position: relative;
+}
+
+
+/* ============================================
+   DARK OVERLAY BOX
+   Uses ABSOLUTE positioning inside .main
+   ============================================ */
+.main .box {
+    height: 644px;
+    width: 100%;
+    opacity: 0.69;
+    
+    /* ABSOLUTE POSITIONING - Positioned relative to .main (nearest positioned ancestor) */
+    position: absolute;
+    top: 0;      /* 0px from top of .main */
+    left: 0;     /* 0px from left of .main */
+    
+    background-color: black;
+    
+    /* Z-INDEX - Controls stacking order (lower = behind) */
+    z-index: 1;
+}
+
+/* ============================================
+   NAVIGATION BAR
+   Uses FLEXBOX for horizontal layout
+   ============================================ */
+nav {
+    width: 900px;                    /* FIXED WIDTH - Not responsive */
+    margin: auto;                    /* Centers nav horizontally */
+    height: 100px;
+    
+    /* FLEXBOX - For horizontal alignment */
+    display: flex;
+    justify-content: space-between;  /* Logo on left, buttons on right */
+    align-items: center;             /* Vertically centers items */
+    
+    /* RELATIVE POSITIONING - So z-index works */
+    position: relative;
+    z-index: 10;                     /* Above the dark overlay */
+}
+
+
+/* NAV LOGO IMAGE */
+nav img {
+    color: red;
+    width: 130px;
+    
+    /* RELATIVE POSITIONING with Z-INDEX */
+    position: relative;
+    z-index: 10;  /* Ensures logo appears above overlay */
+}
+
+
+/* NAV BUTTONS */
+nav button {
+    /* RELATIVE POSITIONING with Z-INDEX */
+    position: relative;
+    z-index: 10;  /* Ensures buttons appear above overlay */
+}
+
+
+/* ============================================
+   HERO CONTENT SECTION
+   Uses FLEXBOX for centering content
+   ============================================ */
+.hero {
+    font-family: 'Martel Sans', sans-serif;
+    height: calc(100% - 100px);  /* Full height minus nav height */
+    color: white;
+    padding: 0 30px;
+    gap: 23px;
+    
+    /* FLEXBOX - For centering content */
+    display: flex;
+    flex-direction: column;       /* Stack items vertically */
+    align-items: center;          /* Center horizontally */
+    justify-content: center;      /* Center vertically */
+    
+    /* RELATIVE POSITIONING - Above the dark overlay */
+    position: relative;
+    z-index: 5;
+}
+
+/* Hero Text Styling - Using nth-child selector */
+.hero> :nth-child(1) {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bolder;
+    font-size: 48px;
+    text-align: center;
+}
+
+.hero> :nth-child(2) {
+    font-weight: 400;
+    font-size: 24px;
+    text-align: center;
+}
+
+.hero> :nth-child(3) {
+    font-weight: 400;
+    font-size: 20px;
+    text-align: center;
+}
+
+
+/* ============================================
+   SEPARATION LINE
+   Divider between sections
+   ============================================ */
+.separation {
+    height: 7px;
+    background-color: rgb(46, 44, 44);
+    
+    /* RELATIVE POSITIONING with high Z-INDEX */
+    position: relative;
+    z-index: 20;  /* Above all other elements */
+}
+
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+.btn {
+    padding: 3px 8px;
+    font-weight: 400;
+    color: white;
+    background-color: rgba(248, 243, 243, 0.021);
+    border-radius: 4px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.btn-red {
+    background-color: red;
+    color: white;
+    padding: 3px 24px;
+    font-size: 20px;
+    border-radius: 4px;
+    font-weight: 400;
+    border: none;
+}
+
+.btn-red-sm {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+
+/* ============================================
+   HERO BUTTONS CONTAINER
+   Uses FLEXBOX for horizontal layout
+   ============================================ */
+.hero-buttons {
+    /* FLEXBOX - Horizontal layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+
+/* EMAIL INPUT FIELD */
+.main input {
+    padding: 7px 101px 8px 14px;
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    background-color: rgba(23, 23, 23, 0.7);
+    border: 1px solid rgba(246, 238, 238, 0.5);
+}
+
+
+/* ============================================
+   FEATURE SECTIONS (.first, .second, .third)
+   Uses FLEXBOX for two-column layout
+   ============================================ */
+.first {
+    width: 1000px;             /* FIXED WIDTH - Not responsive */
+    margin: auto;              /* Centers the section */
+    color: white;
+    padding: 50px 0;
+    
+    /* FLEXBOX - Two column layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+
+/* ============================================
+   SECTION IMAGE CONTAINER
+   Uses RELATIVE positioning (parent for video)
+   ============================================ */
+.secImg {
+    /* RELATIVE POSITIONING - Container for absolutely positioned video */
+    position: relative;
+    
+    /* Sets the size of the container */
+    width: 555px;
+    height: auto;
+}
+
+
+/* SECTION IMAGE */
+.secImg img {
+    width: 100%;
+    height: auto;
+    display: block;
+    
+    /* RELATIVE POSITIONING with Z-INDEX */
+    position: relative;
+    z-index: 10;  /* Image appears above video */
+    
+    border-radius: 8px;
+}
+
+
+/* ============================================
+   VIDEO INSIDE SECTION
+   Uses ABSOLUTE positioning inside .secImg
+   ============================================ */
+.secImg video {
+    width: 80%;
+    
+    /* ABSOLUTE POSITIONING - Positioned relative to .secImg */
+    position: absolute;
+    
+    /* Position the video in center of the image */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* Centers the video perfectly */
+    
+    /* Z-INDEX - Behind the image frame */
+    z-index: 5;
+    
+    border-radius: 4px;
+}
+
+/* ============================================
+   FEATURE SECTION TEXT CONTENT
+   Uses FLEXBOX for vertical stacking
+   ============================================ */
+section.first>div {
+    /* FLEXBOX - Stack text vertically */
+    display: flex;
+    flex-direction: column;
+    padding: 34px 0;
+    gap: 15px;
+    
+    /* Takes up remaining space */
+    flex: 1;
+}
+
+/* Section Title */
+section.first>div :nth-child(1) {
+    font-size: 48px;
+    font-weight: bolder;
+}
+
+/* Section Description */
+section.first>div :nth-child(2) {
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+
+/* ============================================
+   FAQ SECTION
+   ============================================ */
+.faq {
+    background: black;
+    color: white;
+    padding: 50px 34px;
+}
+
+.faq h2 {
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 30px;
+}
+
+
+/* ============================================
+   FAQ BOX ITEMS
+   Uses FLEXBOX for space-between layout
+   ============================================ */
+.faqbox {
+    font-size: 24px;
+    width: 900px;              /* FIXED WIDTH - Not responsive */
+    margin: 15px auto;
+    padding: 24px;
+    background-color: #2d2d2d;
+    cursor: pointer;
+    
+    /* FLEXBOX - Question on left, icon on right */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* Smooth hover transition */
+    transition: all 0.3s ease-out;
+}
+
+.faqbox:hover {
+    background-color: #414141;
+    color: white;
+}
+
+.faqbox svg {
+    filter: invert(1);  /* Makes SVG icon white */
+}
+
+/* ============================================
+   FOOTER SECTION
+   ============================================ */
+footer {
+    color: white;
+    width: 900px;        /* FIXED WIDTH - Not responsive */
+    margin: auto;        /* Centers footer horizontally */
+    padding: 60px 20px;
+}
+
+footer .questions {
+    padding: 34px 0;
+    font-size: 16px;
+}
+
+
+/* ============================================
+   FOOTER LINKS GRID
+   Uses CSS GRID for 4-column layout
+   ============================================ */
+.footer {
+    color: white;
+    
+    /* CSS GRID - Creates 4 equal columns */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;  /* 4 equal columns */
+    gap: 20px;
+}
+
+.footer a {
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================================
+   FOOTER ITEM (Each column)
+   Uses FLEXBOX for vertical stacking
+   ============================================ */
+.footer-item {
+    /* FLEXBOX - Stack links vertically */
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+}
