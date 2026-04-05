@@ -67,7 +67,11 @@
             
             <!-- Video that plays inside the TV frame - Local video from VIDEOS folder -->
             <!-- autoplay: starts automatically, loop: repeats, muted: no sound -->
-            <video src="VIDEOS/video1 (1).m4v" autoplay loop muted></video>
+            <video autoplay loop muted playsinline>
+                <source src="VIDEOS/video1 (1).mp4" type="video/mp4">
+                <source src="VIDEOS/video1 (1).m4v" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </section>
     <div class="separation"></div>
@@ -98,7 +102,11 @@
             <img src="IMAGES/bg.jpg" alt="Multiple Devices">
             
             <!-- Video plays automatically, loops, and is muted -->
-            <video src="VIDEOS/video1 (1).m4v" autoplay loop muted></video>
+            <video autoplay loop muted playsinline>
+                <source src="VIDEOS/video1 (1).mp4" type="video/mp4">
+                <source src="VIDEOS/video1 (1).m4v" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </section>
     <div class="separation"></div>

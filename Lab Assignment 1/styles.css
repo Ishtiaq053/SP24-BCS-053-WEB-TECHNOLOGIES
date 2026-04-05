@@ -258,7 +258,7 @@ nav button {
     
     /* RELATIVE POSITIONING with Z-INDEX */
     position: relative;
-    z-index: 10;  /* Image appears above video */
+    z-index: 1;
     
     border-radius: 8px;
 }
@@ -280,7 +280,8 @@ nav button {
     transform: translate(-50%, -50%);  /* Centers the video perfectly */
     
     /* Z-INDEX - Behind the image frame */
-    z-index: 5;
+    z-index: 2;
+    object-fit: cover;
     
     border-radius: 4px;
 }
