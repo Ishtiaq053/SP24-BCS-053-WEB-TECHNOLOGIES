@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkerFinder - Find Skilled Workers Near You</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <img src="https://img.icons8.com/color/48/000000/maintenance.png" alt="Logo" class="logo-img">
+                <span class="logo-text">WorkerFinder</span>
+            </div>
+
+            <!-- Hamburger Menu Icon -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- Navigation Links -->
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="#login" class="nav-link">Login</a></li>
+                <li class="nav-item nav-signup"><a href="#signup" class="nav-link">Signup</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Find Skilled Workers Near You</h1>
+                <p class="hero-subtitle">Connect with trusted and verified professionals in your area. Get your work done quickly and efficiently with our reliable service providers.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Hire a Worker</button>
+                    <button class="btn btn-secondary">Find Jobs</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=500&h=400&fit=crop" alt="Workers at construction site">
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">We offer a wide range of professional services to meet all your needs</p>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=300&h=200&fit=crop" alt="Plumbing">
+                    </div>
+                    <div class="service-icon">🔧</div>
+                    <h3 class="service-title">Plumbing</h3>
+                    <p class="service-desc">Expert plumbers available for pipe repairs, installations, leak fixing, and all water-related issues in your home or office.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&h=200&fit=crop" alt="Electrical">
+                    </div>
+                    <div class="service-icon">⚡</div>
+                    <h3 class="service-title">Electrical</h3>
+                    <p class="service-desc">Licensed electricians for wiring, repairs, installations, and electrical safety inspections for residential and commercial properties.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=300&h=200&fit=crop" alt="Carpentry">
+                    </div>
+                    <div class="service-icon">🪚</div>
+                    <h3 class="service-title">Carpentry</h3>
+                    <p class="service-desc">Skilled carpenters for custom furniture, door and window repairs, wooden flooring, and all woodwork projects.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=300&h=200&fit=crop" alt="Painting">
+                    </div>
+                    <div class="service-icon">🎨</div>
+                    <h3 class="service-title">Painting</h3>
+                    <p class="service-desc">Professional painters for interior and exterior painting, wall textures, and complete home renovation painting services.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=300&h=200&fit=crop" alt="Cleaning">
+                    </div>
+                    <div class="service-icon">🧹</div>
+                    <h3 class="service-title">Cleaning</h3>
+                    <p class="service-desc">Thorough cleaning services for homes, offices, and commercial spaces. Deep cleaning, regular maintenance, and move-in/out cleaning.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=300&h=200&fit=crop" alt="Driving">
+                    </div>
+                    <div class="service-icon">🚗</div>
+                    <h3 class="service-title">Driving</h3>
+                    <p class="service-desc">Reliable and experienced drivers for personal transportation, delivery services, and long-distance travel requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Getting started with WorkerFinder is easy. Follow these three simple steps.</p>
+
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-img">
+                        <img src="https://img.icons8.com/color/96/000000/edit-file.png" alt="Post Job">
+                    </div>
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Post a Job</h3>
+                    <p class="step-desc">Create a job listing by describing your requirements, location, and budget. It only takes a few minutes.</p>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step">
+                    <div class="step-img">
+                        <img src="https://img.icons8.com/color/96/000000/resume.png" alt="Applications">
+                    </div>
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Get Applications</h3>
+                    <p class="step-desc">Receive applications from qualified workers. Review their profiles, ratings, and previous work experience.</p>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step">
+                    <div class="step-img">
+                        <img src="https://img.icons8.com/color/96/000000/handshake.png" alt="Hire">
+                    </div>
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Hire the Best Worker</h3>
+                    <p class="step-desc">Select the best candidate based on their skills and reviews. Start your project with confidence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES / WHY CHOOSE US SECTION -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose WorkerFinder?</h2>
+            <p class="section-subtitle">We are committed to providing the best experience for both workers and clients</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://img.icons8.com/color/80/000000/checked-user-male.png" alt="Verified">
+                    </div>
+                    <h3 class="feature-title">Verified Workers</h3>
+                    <p class="feature-desc">Every worker on our platform goes through a verification process including ID verification and skill assessment.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://img.icons8.com/color/80/000000/chat.png" alt="Communication">
+                    </div>
+                    <h3 class="feature-title">Easy Communication</h3>
+                    <p class="feature-desc">Our built-in messaging system allows you to communicate directly with workers before and during the job.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://img.icons8.com/color/80/000000/security-checked.png" alt="Secure">
+                    </div>
+                    <h3 class="feature-title">Secure Platform</h3>
+                    <p class="feature-desc">Your personal information and payments are protected with industry-standard security measures.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://img.icons8.com/color/80/000000/speed.png" alt="Fast">
+                    </div>
+                    <h3 class="feature-title">Fast Hiring</h3>
+                    <p class="feature-desc">Find and hire the right worker within hours. Our large network ensures quick response times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Have questions or need assistance? We are here to help you.</p>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <img src="https://img.icons8.com/color/48/000000/marker.png" alt="Location">
+                        <div>
+                            <h4>Our Office</h4>
+                            <p>123 Main Street, Gulberg III, Lahore, Pakistan</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <img src="https://img.icons8.com/color/48/000000/phone.png" alt="Phone">
+                        <div>
+                            <h4>Phone Number</h4>
+                            <p>+92 300 1234567</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <img src="https://img.icons8.com/color/48/000000/email.png" alt="Email">
+                        <div>
+                            <h4>Email Address</h4>
+                            <p>support@workerfinder.pk</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <img src="https://img.icons8.com/color/48/000000/clock.png" alt="Hours">
+                        <div>
+                            <h4>Working Hours</h4>
+                            <p>Monday - Saturday: 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form>
+                        <input type="text" placeholder="Your Full Name" required>
+                        <input type="email" placeholder="Your Email Address" required>
+                        <input type="text" placeholder="Subject">
+                        <textarea placeholder="Write your message here..." rows="5" required></textarea>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Find answers to common questions about WorkerFinder</p>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I create an account on WorkerFinder?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Creating an account is simple and free. Click on the "Signup" button in the navigation bar, fill in your basic information including name, email, and phone number. You can register as a client looking to hire workers or as a worker offering your services. After registration, verify your email address to activate your account.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How are workers verified on the platform?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All workers on WorkerFinder go through a verification process. This includes ID verification using CNIC, skill assessment based on their experience and certifications, and background checks. Workers with completed verifications display a verified badge on their profile, giving you confidence in their authenticity.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What payment methods are accepted?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>WorkerFinder supports multiple payment methods for your convenience. You can pay using bank transfer, JazzCash, EasyPaisa, or cash on completion. All online payments are processed through secure payment gateways to ensure your financial information remains protected.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I cancel a job after posting it?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can cancel a job posting at any time before hiring a worker. If you have already hired a worker and need to cancel, please communicate with the worker through our messaging system. Cancellation policies may vary depending on whether work has already begun. We recommend discussing any changes directly with the hired worker.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I contact a worker before hiring?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Once you post a job and receive applications, you can view each worker's profile and use our built-in messaging system to communicate with them. This allows you to discuss job details, negotiate pricing, and ask questions before making your hiring decision. All conversations are saved in your account for reference.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What if I am not satisfied with the work?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Customer satisfaction is our priority. If you are not satisfied with the work, first try to resolve the issue directly with the worker. If that does not work, you can file a complaint through our support system. Our team will review the case and help mediate a fair resolution. We also have a review system where you can rate workers based on their performance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="https://img.icons8.com/color/48/000000/maintenance.png" alt="Logo">
+                        <h3>WorkerFinder</h3>
+                    </div>
+                    <p>Connecting skilled workers with people who need their services. Making professional help accessible to everyone in Pakistan.</p>
+                    <div class="social-icons">
+                        <a href="#"><img src="https://img.icons8.com/color/32/000000/facebook-new.png" alt="Facebook"></a>
+                        <a href="#"><img src="https://img.icons8.com/color/32/000000/twitter.png" alt="Twitter"></a>
+                        <a href="#"><img src="https://img.icons8.com/color/32/000000/instagram-new.png" alt="Instagram"></a>
+                        <a href="#"><img src="https://img.icons8.com/color/32/000000/linkedin.png" alt="LinkedIn"></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#features">Why Choose Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Workers</h4>
+                    <ul>
+                        <li><a href="#signup">Register as Worker</a></li>
+                        <li><a href="#">Find Jobs</a></li>
+                        <li><a href="#">Worker Guidelines</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 WorkerFinder. All rights reserved. | Developed by SP24-BCS-053</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/navbar.js"></script>
+</body>
+</html>
