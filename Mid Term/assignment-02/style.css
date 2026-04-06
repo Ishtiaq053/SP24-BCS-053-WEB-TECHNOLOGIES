@@ -942,3 +942,208 @@ body {
         font-size: 20px;
     }
 }
+
+
+/* ============================================================
+   ✅ SLICK CAROUSEL — Minimal Additions (DO NOT remove existing styles)
+   These only activate when .slider class is present.
+   Existing .services-grid styles are still intact for fallback.
+   ============================================================ */
+
+/* Override grid layout for carousel mode */
+.services-grid.slider {
+    display: block;      /* Slick needs block, not grid */
+}
+
+/* Ensure each card has proper width and spacing inside slider */
+.services-grid.slider .service-card {
+    margin: 0 12px;      /* Horizontal gap between cards */
+    box-sizing: border-box;
+}
+
+/* Slick arrow button positioning and styling */
+.services-grid.slider .slick-prev,
+.services-grid.slider .slick-next {
+    z-index: 10;
+    width: 38px;
+    height: 38px;
+    background-color: var(--primary-color, #2563eb);
+    border-radius: 50%;
+}
+
+.services-grid.slider .slick-prev {
+    left: -18px;
+}
+
+.services-grid.slider .slick-next {
+    right: -18px;
+}
+
+.services-grid.slider .slick-prev:hover,
+.services-grid.slider .slick-next:hover {
+    background-color: var(--primary-dark, #1d4ed8);
+}
+
+.services-grid.slider .slick-prev:before,
+.services-grid.slider .slick-next:before {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Slide Counter styling — matches existing design */
+.slide-counter {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+
+/* ============================================================
+   ✅ UI ENHANCEMENT v2 — Safe additions only. Nothing above
+   this line is touched. All rules are scoped to new classes
+   or use specificity to safely override only what's needed.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. ELEGANT COLOR THEME — upgrade key CSS variables
+      These re-declare the same variable names so every
+      existing rule that uses them gets the refined palette
+      automatically. No class renames needed.
+   ---------------------------------------------------------- */
+:root {
+    --primary-color:  #1e3a5f;   /* Deep navy — replaces bright blue */
+    --primary-dark:   #152c47;   /* Darker navy for hover states */
+    --secondary-color:#f0f4f8;   /* Cooler soft gray background */
+    --accent-color:   #3b82f6;   /* Modern mid-blue for highlights */
+    --border-color:   #d1dae6;   /* Slightly cooler border */
+    --text-medium:    #4a5568;   /* Warmer slate for body text */
+}
+
+/* ----------------------------------------------------------
+   2. CUSTOM PREV / NEXT ARROW BUTTONS
+      .carousel-wrapper positions the slider + buttons
+      as a group so arrows sit flush on the card edges.
+   ---------------------------------------------------------- */
+
+/* Outer wrapper: relative so buttons can be absolutely placed */
+.carousel-wrapper {
+    position: relative;
+    padding: 0 48px;   /* Side room so arrows don't overlap cards */
+}
+
+/* Shared button base */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+
+    /* Circle shape */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    /* Elegant navy fill */
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: 2px solid var(--primary-color);
+
+    /* Typography */
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+
+    /* Smooth interactions */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(30, 58, 95, 0.25);
+
+    /* Remove browser default button styles */
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Position prev on the left edge */
+.carousel-btn-prev {
+    left: 0;
+}
+
+/* Position next on the right edge */
+.carousel-btn-next {
+    right: 0;
+}
+
+/* Hover: lighten to accent blue + slight scale */
+.carousel-btn:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+/* Active / click: shrink slightly for tactile feel */
+.carousel-btn:active {
+    transform: translateY(-50%) scale(0.96);
+}
+
+/* ----------------------------------------------------------
+   3. REDUCED CARD SIZE — smaller image + tighter padding
+      Scoped to .services-grid.slider so the grid fallback
+      (if Slick ever fails) is not affected.
+   ---------------------------------------------------------- */
+
+/* Smaller image area: was 160px, now 130px */
+.services-grid.slider .service-img {
+    height: 130px;
+}
+
+/* Tighter card padding */
+.services-grid.slider .service-card {
+    padding-bottom: 16px;
+}
+
+/* Slightly smaller emoji icon */
+.services-grid.slider .service-icon {
+    font-size: 28px;
+    margin: 10px 0 6px;
+}
+
+/* Tighter title spacing */
+.services-grid.slider .service-title {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+/* Slightly smaller description text */
+.services-grid.slider .service-desc {
+    font-size: 13px;
+    padding: 0 14px 0;
+    line-height: 1.55;
+}
+
+/* ----------------------------------------------------------
+   4. SLIDE COUNTER — refined to match new palette
+   ---------------------------------------------------------- */
+.slide-counter {
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+}
+
+/* ----------------------------------------------------------
+   5. SERVICES SECTION — subtle background refinement
+   ---------------------------------------------------------- */
+.services {
+    background-color: var(--secondary-color);
+}
+
+/* Card hover accent line — adds a top border flash on hover */
+.service-card:hover {
+    border-top: 3px solid var(--accent-color);
+}

@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkerFinder - Find Skilled Workers Near You</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- ✅ STEP 1: Slick Carousel CSS (place in <head>, after your style.css) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 </head>
 <body>
     <!-- NAVBAR -->
@@ -57,7 +61,16 @@
             <h2 class="section-title">Our Services</h2>
             <p class="section-subtitle">We offer a wide range of professional services to meet all your needs</p>
 
-            <div class="services-grid">
+            <!-- Carousel wrapper holds the slider + custom arrows together -->
+            <div class="carousel-wrapper">
+
+                <!-- Custom Prev Button -->
+                <button class="carousel-btn carousel-btn-prev" id="slickPrev" aria-label="Previous slide">
+                    &#8592;
+                </button>
+
+                <!-- ✅ STEP 2: Add class "slider" to existing services-grid (only this change to HTML) -->
+                <div class="services-grid slider">
                 <div class="service-card">
                     <div class="service-img">
                         <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=300&h=200&fit=crop" alt="Plumbing">
@@ -111,7 +124,17 @@
                     <h3 class="service-title">Driving</h3>
                     <p class="service-desc">Reliable and experienced drivers for personal transportation, delivery services, and long-distance travel requirements.</p>
                 </div>
-            </div>
+                </div><!-- /.services-grid -->
+
+                <!-- Custom Next Button -->
+                <button class="carousel-btn carousel-btn-next" id="slickNext" aria-label="Next slide">
+                    &#8594;
+                </button>
+
+            </div><!-- /.carousel-wrapper -->
+
+            <!-- ✅ STEP 3: Slide Counter — shows "Showing X of 6" below the carousel -->
+            <p class="slide-counter" id="slideCounter">Showing 1 of 6</p>
         </div>
     </section>
 
@@ -375,5 +398,70 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- ✅ STEP 4: jQuery + Slick JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    <!-- ✅ STEP 5: Slick Carousel Initialization + Slide Counter -->
+    <script>
+        $(document).ready(function () {
+
+            // Initialize Slick on the services-grid
+            $('.services-grid.slider').slick({
+                infinite: true,          // Infinite loop
+                slidesToShow: 3,         // Desktop: 3 cards
+                slidesToScroll: 1,
+                autoplay: true,          // Auto-play
+                autoplaySpeed: 5000,     // Slide every 5 seconds
+                pauseOnHover: true,      // Pause on hover
+                arrows: false,           // Custom buttons used instead (see below)
+                dots: false,
+
+                // Responsive breakpoints
+                responsive: [
+                    {
+                        breakpoint: 1024,   // Tablet
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 768,    // Mobile
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+
+            // Custom Prev / Next buttons wired to Slick
+            $('#slickPrev').on('click', function () {
+                $('.services-grid.slider').slick('slickPrev');
+            });
+
+            $('#slickNext').on('click', function () {
+                $('.services-grid.slider').slick('slickNext');
+            });
+
+            // ✅ STEP 6: Slide Counter — update on every slide change
+            // FIX: Use Slick's own slideCount (ignores cloned slides made for infinite loop)
+            // DO NOT use $('.service-card').length — Slick clones slides and inflates the count
+            var totalSlides = $('.services-grid.slider').slick('getSlick').slideCount;
+
+            function updateCounter(currentIndex) {
+                $('#slideCounter').text('Showing ' + (currentIndex + 1) + ' of ' + totalSlides);
+            }
+
+            // Set initial counter
+            updateCounter(0);
+
+            // Update counter after every slide
+            $('.services-grid.slider').on('afterChange', function (event, slick, currentSlide) {
+                updateCounter(currentSlide);
+            });
+
+        });
+    </script>
 </body>
 </html>
