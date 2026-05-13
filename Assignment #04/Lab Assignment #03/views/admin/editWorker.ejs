@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Worker — WorkerFinder</title>
+    <meta name="description" content="Admin panel — edit an existing worker in WorkerFinder.">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<%- include('../partials/adminNavbar') %>
+<%- include('../partials/flash') %>
+
+<div class="admin-wrapper">
+
+    <%- include('../partials/adminSidebar', { activePage: 'workers' }) %>
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <div>
+                <h1 class="admin-page-title">Edit Worker</h1>
+                <p class="admin-page-sub">Editing: <strong><%= worker.name %></strong></p>
+            </div>
+            <a href="/admin/workers" class="btn-admin-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                Back to Workers
+            </a>
+        </header>
+
+        <!-- ── Form Card ── -->
+        <div class="admin-form-card">
+
+            <form
+                id="edit-worker-form"
+                action="/admin/workers/edit/<%= worker._id %>"
+                method="POST"
+                enctype="multipart/form-data"
+                novalidate
+            >
+
+                <!-- ── Image Upload ── -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Worker Photo</h3>
+                    <div class="img-upload-row">
+                        <!-- Current image -->
+                        <div class="current-img-wrap">
+                            <p class="current-img-label">Current Photo</p>
+                            <img
+                                id="current-img"
+                                src="<%= worker.image || '/images/avatar-placeholder.png' %>"
+                                alt="Current photo of <%= worker.name %>"
+                                class="current-img"
+                                onerror="this.src='/images/avatar-placeholder.png'"
+                            >
+                            <% if (!worker.image) { %>
+                                <span class="current-img-note">No photo — using placeholder</span>
+                            <% } %>
+                        </div>
+
+                        <!-- New upload -->
+                        <div class="img-upload-area" id="img-upload-area" style="flex:1">
+                            <div class="img-preview-wrap">
+                                <img id="img-preview" src="" alt="" class="img-preview hidden">
+                                <div class="img-upload-placeholder" id="img-placeholder">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                    <p>Upload new photo (optional)</p>
+                                    <span>JPG, PNG, WebP — max 5 MB</span>
+                                </div>
+                            </div>
+                            <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png,.webp" class="img-file-input">
+                            <div id="img-error" class="field-error hidden">Invalid image. Only JPG, PNG, WebP up to 5 MB.</div>
+                            <p class="img-note">Leave empty to keep the current photo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Basic Info ── -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Basic Information</h3>
+                    <div class="form-grid-2">
+
+                        <!-- Name -->
+                        <div class="admin-form-group">
+                            <label for="name" class="admin-form-label">Full Name <span class="req">*</span></label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="admin-form-input <%= errors.name ? 'input-error' : '' %>"
+                                placeholder="e.g. Muhammad Ali"
+                                value="<%= (Object.keys(old).length ? old.name : worker.name) || '' %>"
+                                maxlength="80"
+                            >
+                            <% if (errors.name) { %><span class="field-error"><%= errors.name %></span><% } %>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="admin-form-group">
+                            <label for="category" class="admin-form-label">Category <span class="req">*</span></label>
+                            <select id="category" name="category" class="admin-form-input admin-form-select <%= errors.category ? 'input-error' : '' %>">
+                                <option value="">— Select Category —</option>
+                                <% const selCat = Object.keys(old).length ? old.category : worker.category; %>
+                                <% categories.forEach(function(cat) { %>
+                                    <option value="<%= cat %>" <%= selCat === cat ? 'selected' : '' %>><%= cat %></option>
+                                <% }); %>
+                            </select>
+                            <% if (errors.category) { %><span class="field-error"><%= errors.category %></span><% } %>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="admin-form-group">
+                            <label for="price" class="admin-form-label">Hourly Rate (PKR) <span class="req">*</span></label>
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                class="admin-form-input <%= errors.price ? 'input-error' : '' %>"
+                                placeholder="e.g. 500"
+                                value="<%= (Object.keys(old).length ? old.price : worker.price) || '' %>"
+                                min="0"
+                            >
+                            <% if (errors.price) { %><span class="field-error"><%= errors.price %></span><% } %>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="admin-form-group">
+                            <label for="rating" class="admin-form-label">Rating (1–5)</label>
+                            <input
+                                type="number"
+                                id="rating"
+                                name="rating"
+                                class="admin-form-input <%= errors.rating ? 'input-error' : '' %>"
+                                placeholder="e.g. 4.5"
+                                value="<%= (Object.keys(old).length ? old.rating : worker.rating) || '3' %>"
+                                min="1" max="5" step="0.1"
+                            >
+                            <% if (errors.rating) { %><span class="field-error"><%= errors.rating %></span><% } %>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="admin-form-group">
+                            <label for="location" class="admin-form-label">Location</label>
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                class="admin-form-input"
+                                placeholder="e.g. Lahore"
+                                value="<%= (Object.keys(old).length ? old.location : worker.location) || 'Lahore' %>"
+                                maxlength="60"
+                            >
+                        </div>
+
+                        <!-- Experience -->
+                        <div class="admin-form-group">
+                            <label for="experience" class="admin-form-label">Experience (years)</label>
+                            <input
+                                type="number"
+                                id="experience"
+                                name="experience"
+                                class="admin-form-input"
+                                placeholder="e.g. 5"
+                                value="<%= (Object.keys(old).length ? old.experience : worker.experience) || '0' %>"
+                                min="0" max="50"
+                            >
+                        </div>
+
+                        <!-- Jobs Done -->
+                        <div class="admin-form-group">
+                            <label for="jobsDone" class="admin-form-label">Jobs Done</label>
+                            <input
+                                type="number"
+                                id="jobsDone"
+                                name="jobsDone"
+                                class="admin-form-input"
+                                placeholder="e.g. 120"
+                                value="<%= (Object.keys(old).length ? old.jobsDone : worker.jobsDone) || '0' %>"
+                                min="0"
+                            >
+                        </div>
+
+                        <!-- Availability -->
+                        <div class="admin-form-group">
+                            <label for="stock" class="admin-form-label">Availability</label>
+                            <% const selStock = Object.keys(old).length ? old.stock : String(worker.stock); %>
+                            <select id="stock" name="stock" class="admin-form-input admin-form-select">
+                                <option value="1" <%= selStock === '1' ? 'selected' : '' %>>Available</option>
+                                <option value="0" <%= selStock === '0' ? 'selected' : '' %>>Busy</option>
+                            </select>
+                        </div>
+
+                        <!-- Verified -->
+                        <div class="admin-form-group">
+                            <label for="verified" class="admin-form-label">Verified Status</label>
+                            <% const selVerified = Object.keys(old).length ? old.verified : String(worker.verified); %>
+                            <select id="verified" name="verified" class="admin-form-input admin-form-select">
+                                <option value="false" <%= selVerified === 'false' ? 'selected' : '' %>>Not Verified</option>
+                                <option value="true"  <%= selVerified === 'true'  ? 'selected' : '' %>>Verified ✓</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ── Description ── -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Description</h3>
+                    <div class="admin-form-group">
+                        <label for="description" class="admin-form-label">Bio / Skills Summary</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="admin-form-input admin-form-textarea"
+                            placeholder="Describe the worker's expertise, skills, and experience..."
+                            rows="4"
+                            maxlength="600"
+                        ><%= (Object.keys(old).length ? old.description : worker.description) || '' %></textarea>
+                        <span class="char-count" id="desc-count">0 / 600</span>
+                    </div>
+                </div>
+
+                <!-- ── Form Actions ── -->
+                <div class="form-actions">
+                    <a href="/admin/workers" class="btn-form-cancel">Cancel</a>
+                    <button type="submit" class="btn-form-submit" id="submit-btn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+</div>
+
+<script src="/js/navbar.js"></script>
+<script>
+/* ── Image Preview ─────────────────────────────────── */
+const fileInput   = document.getElementById('image');
+const preview     = document.getElementById('img-preview');
+const placeholder = document.getElementById('img-placeholder');
+const imgError    = document.getElementById('img-error');
+const uploadArea  = document.getElementById('img-upload-area');
+const currentImg  = document.getElementById('current-img');
+
+function handleFile(file) {
+    if (!file) return;
+    const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowed.includes(file.type)) {
+        imgError.textContent = 'Invalid image type. Only JPG, PNG, WebP allowed.';
+        imgError.classList.remove('hidden');
+        fileInput.value = '';
+        return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+        imgError.textContent = 'File too large. Maximum size is 5 MB.';
+        imgError.classList.remove('hidden');
+        fileInput.value = '';
+        return;
+    }
+    imgError.classList.add('hidden');
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.classList.remove('hidden');
+        placeholder.style.display = 'none';
+        // Also update the "current" preview to show what will be saved
+        currentImg.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+uploadArea.addEventListener('click', () => fileInput.click());
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) {
+        fileInput.files = e.dataTransfer.files;
+        handleFile(e.dataTransfer.files[0]);
+    }
+});
+fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+/* ── Char counter ─────────────────────────────────── */
+const desc      = document.getElementById('description');
+const descCount = document.getElementById('desc-count');
+desc.addEventListener('input', () => { descCount.textContent = `${desc.value.length} / 600`; });
+descCount.textContent = `${desc.value.length} / 600`;
+
+/* ── Client-side Validation ───────────────────────── */
+const form = document.getElementById('edit-worker-form');
+form.addEventListener('submit', function(e) {
+    let valid = true;
+
+    const name = document.getElementById('name');
+    if (!name.value.trim()) { showError(name, 'Name is required.'); valid = false; }
+    else clearError(name);
+
+    const cat = document.getElementById('category');
+    if (!cat.value) { showError(cat, 'Please select a category.'); valid = false; }
+    else clearError(cat);
+
+    const price = document.getElementById('price');
+    if (!price.value || isNaN(price.value) || Number(price.value) < 0) {
+        showError(price, 'Enter a valid positive price.'); valid = false;
+    } else clearError(price);
+
+    const rating = document.getElementById('rating');
+    if (rating.value && (Number(rating.value) < 1 || Number(rating.value) > 5)) {
+        showError(rating, 'Rating must be between 1 and 5.'); valid = false;
+    } else clearError(rating);
+
+    if (!valid) e.preventDefault();
+});
+
+function showError(input, msg) {
+    input.classList.add('input-error');
+    let err = input.parentElement.querySelector('.field-error');
+    if (!err) { err = document.createElement('span'); err.className = 'field-error'; input.parentElement.appendChild(err); }
+    err.textContent = msg;
+    err.classList.remove('hidden');
+}
+function clearError(input) {
+    input.classList.remove('input-error');
+    const err = input.parentElement.querySelector('.field-error');
+    if (err) err.textContent = '';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/" class="navbar-logo">
+            <img
+                src="/images/favicon.png"
+                alt="WorkerFinder"
+                class="navbar-logo-img"
+                onerror="this.style.display='none'"
+            >
+            <span class="logo-text">WorkerFinder</span>
+        </a>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item"><a href="/"          class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="/#services"  class="nav-link">Services</a></li>
+            <li class="nav-item"><a href="/#contact" class="nav-link">Contact Us</a></li>
+            <li class="nav-item"><a href="/workers"    class="nav-link">Find Workers</a></li>
+
+            <% if (currentUser) { %>
+                <% if (currentUser.role === 'admin') { %>
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link nav-admin-link">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            Admin Panel
+                        </a>
+                    </li>
+                <% } %>
+                <li class="nav-item nav-user-greeting">
+                    <span class="nav-greeting">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Hi, <%= currentUser.name.split(' ')[0] %>
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" class="nav-link nav-logout-btn">Logout</a>
+                </li>
+            <% } else { %>
+                <li class="nav-item"><a href="/login"    class="nav-link">Login</a></li>
+                <li class="nav-item nav-signup"><a href="/register" class="nav-link">Register</a></li>
+            <% } %>
+        </ul>
+    </div>
+</nav>

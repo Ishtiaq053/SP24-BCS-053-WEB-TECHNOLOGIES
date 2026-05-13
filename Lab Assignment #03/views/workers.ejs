@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find Workers — WorkerFinder</title>
     <meta name="description" content="Browse and hire verified skilled workers near you. Filter by category, price, and rating.">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -12,24 +13,8 @@
 <body>
 
 <!-- ═══ NAVBAR ═══ -->
-<nav class="navbar">
-    <div class="navbar-container">
-        <a href="/" class="navbar-logo">
-            <span class="logo-text">WorkerFinder</span>
-        </a>
-        <div class="hamburger" id="hamburger">
-            <span></span><span></span><span></span>
-        </div>
-        <ul class="nav-menu" id="navMenu">
-            <li class="nav-item"><a href="/"         class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="/#services" class="nav-link">Services</a></li>
-            <li class="nav-item"><a href="/workers"   class="nav-link active-link">Find Workers</a></li>
-            <li class="nav-item"><a href="/#contact"  class="nav-link">Contact</a></li>
-            <li class="nav-item"><a href="/#login"    class="nav-link">Login</a></li>
-            <li class="nav-item nav-signup"><a href="/#signup" class="nav-link">Signup</a></li>
-        </ul>
-    </div>
-</nav>
+<%- include('partials/navbar') %>
+<%- include('partials/flash') %>
 
 <!-- ═══ WORKERS HERO BANNER ═══ -->
 <section class="workers-hero">
@@ -253,9 +238,21 @@
                                 <span class="price-amount">PKR <%= worker.price.toLocaleString() %></span>
                                 <span class="price-unit">/hr</span>
                             </div>
-                            <button class="btn-view-profile" <%= isAvailable ? '' : 'disabled' %> title="<%= isAvailable ? 'View Profile' : 'Currently Busy' %>">
-                                <%= isAvailable ? 'View Profile' : 'Unavailable' %>
-                            </button>
+                            <% if (!isAvailable) { %>
+                                <button class="btn-view-profile" disabled title="Currently Busy">
+                                    Unavailable
+                                </button>
+                            <% } else if (currentUser) { %>
+                                <a href="/workers/<%= worker._id %>" class="btn-view-profile">
+                                    View Profile
+                                </a>
+                            <% } else { %>
+                                <a href="/login" class="btn-view-profile btn-view-profile--guest"
+                                   data-worker-id="<%= worker._id %>"
+                                   title="Login to view full profile">
+                                    View Profile
+                                </a>
+                            <% } %>
                         </div>
                     </div>
 
@@ -370,18 +367,10 @@
                     <li><a href="#">About Us</a></li>
                     <li><a href="/#services">Our Services</a></li>
                     <li><a href="/workers">Find Workers</a></li>
-                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="/#contact">Contact Us</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
-                    <li><a href="#">Disclaimer</a></li>
-                </ul>
-            </div>
+
             <div class="footer-section">
                 <h4>Social</h4>
                 <div class="footer-social-col">

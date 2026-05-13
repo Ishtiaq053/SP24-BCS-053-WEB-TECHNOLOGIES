@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — WorkerFinder</title>
+    <meta name="description" content="WorkerFinder admin control panel.">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<%- include('../partials/adminNavbar') %>
+<%- include('../partials/flash') %>
+
+<div class="admin-wrapper">
+
+    <!-- ── Sidebar ── -->
+    <aside class="admin-sidebar">
+        <div class="admin-sidebar-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Admin Panel
+        </div>
+        <nav class="admin-nav">
+
+            <!-- Internal admin nav -->
+            <p class="admin-nav-section-label">Management</p>
+
+            <a href="/admin"   class="admin-nav-link admin-nav-link--active">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <a href="/workers" class="admin-nav-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Workers
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ── Main Content ── -->
+    <main class="admin-main">
+
+        <header class="admin-header">
+            <div>
+                <h1 class="admin-page-title">Dashboard</h1>
+                <p class="admin-page-sub">Welcome back, <strong><%= currentUser.name %></strong> — here's your overview.</p>
+            </div>
+            <div class="admin-header-badge">
+                <span class="role-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Administrator
+                </span>
+            </div>
+        </header>
+
+        <!-- ── Stat Cards ── -->
+        <div class="admin-stats-grid">
+
+            <div class="stat-card stat-card--blue">
+                <div class="stat-card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="stat-card-body">
+                    <p class="stat-card-label">Total Workers</p>
+                    <p class="stat-card-value"><%= totalWorkers %></p>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card--green">
+                <div class="stat-card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="stat-card-body">
+                    <p class="stat-card-label">Available</p>
+                    <p class="stat-card-value"><%= availableWorkers %></p>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card--orange">
+                <div class="stat-card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="stat-card-body">
+                    <p class="stat-card-label">Busy</p>
+                    <p class="stat-card-value"><%= busyWorkers %></p>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card--purple">
+                <div class="stat-card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="stat-card-body">
+                    <p class="stat-card-label">Registered Users</p>
+                    <p class="stat-card-value"><%= totalUsers %></p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── Recent Workers Table ── -->
+        <section class="admin-table-section">
+            <div class="admin-table-header">
+                <h2 class="admin-table-title">Recent Workers</h2>
+                <a href="/workers" class="btn-admin-view-all">View All Workers →</a>
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Location</th>
+                            <th>Rate / hr</th>
+                            <th>Rating</th>
+                            <th>Status</th>
+                            <th>Verified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (recentWorkers.length === 0) { %>
+                            <tr>
+                                <td colspan="8" class="table-empty">No workers found in the database.</td>
+                            </tr>
+                        <% } %>
+                        <% recentWorkers.forEach(function(worker, i) { %>
+                            <tr>
+                                <td class="table-num"><%= i + 1 %></td>
+                                <td class="table-name"><%= worker.name %></td>
+                                <td><span class="table-category-badge"><%= worker.category %></span></td>
+                                <td><%= worker.location %></td>
+                                <td class="table-price">PKR <%= worker.price.toLocaleString() %></td>
+                                <td>
+                                    <span class="table-rating">
+                                        ★ <%= worker.rating.toFixed(1) %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% if (worker.stock === 1) { %>
+                                        <span class="status-badge status-badge--available">Available</span>
+                                    <% } else { %>
+                                        <span class="status-badge status-badge--busy">Busy</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if (worker.verified) { %>
+                                        <span class="verified-tick">✓</span>
+                                    <% } else { %>
+                                        <span class="unverified-dash">–</span>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script src="/js/navbar.js"></script>
+</body>
+</html>

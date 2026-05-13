@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <meta name="description" content="View the full profile, skills, and availability of <%= worker.name %> on WorkerFinder.">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<%- include('../partials/navbar') %>
+<%- include('../partials/flash') %>
+
+<%
+    const emojiMap = {
+        'Plumbing':    '🔧',
+        'Electrical':  '⚡',
+        'Carpentry':   '🪚',
+        'Painting':    '🎨',
+        'Cleaning':    '🧹',
+        'Driving':     '🚗',
+        'Gardening':   '🌿',
+        'AC & Repair': '❄️'
+    };
+    const emoji       = emojiMap[worker.category] || '🛠️';
+    const isAvailable = worker.stock === 1;
+    const fullStars   = Math.floor(worker.rating);
+    const halfStar    = (worker.rating - fullStars) >= 0.5;
+%>
+
+<!-- ═══ DETAIL HERO ═══ -->
+<section class="detail-hero">
+    <div class="detail-hero-overlay"></div>
+    <div class="container">
+        <a href="/workers" class="detail-back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to Workers
+        </a>
+    </div>
+</section>
+
+<!-- ═══ PROFILE MAIN ═══ -->
+<section class="detail-section">
+    <div class="container">
+        <div class="detail-layout">
+
+            <!-- ── Left: Profile Card ── -->
+            <aside class="detail-sidebar">
+                <div class="detail-profile-card">
+                    <div class="detail-avatar-wrap">
+                        <img
+                            src="<%= worker.image && worker.image.trim() !== '' ? worker.image : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(worker.name) + '&background=random&size=120&bold=true&color=fff' %>"
+                            alt="<%= worker.name %>"
+                            class="detail-avatar"
+                            onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(worker.name) %>&background=random&size=120&bold=true&color=fff'"
+                        >
+                        <% if (worker.verified) { %>
+                        <span class="detail-verified-badge" title="Verified Worker">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </span>
+                        <% } %>
+                    </div>
+
+                    <h1 class="detail-name"><%= worker.name %></h1>
+                    <p class="detail-category"><%= emoji %> <%= worker.category %></p>
+
+                    <!-- Star Rating -->
+                    <div class="detail-stars" aria-label="Rating: <%= worker.rating %> out of 5">
+                        <% for (let i = 1; i <= 5; i++) { %>
+                            <% if (i <= fullStars) { %>
+                                <span class="star star--full">★</span>
+                            <% } else if (i === fullStars + 1 && halfStar) { %>
+                                <span class="star star--half">★</span>
+                            <% } else { %>
+                                <span class="star star--empty">★</span>
+                            <% } %>
+                        <% } %>
+                        <span class="rating-value"><%= worker.rating.toFixed(1) %></span>
+                    </div>
+
+                    <!-- Availability -->
+                    <span class="detail-avail-badge <%= isAvailable ? 'badge--available' : 'badge--busy' %>">
+                        <span class="badge-dot"></span>
+                        <%= isAvailable ? 'Available Now' : 'Currently Busy' %>
+                    </span>
+
+                    <!-- Price -->
+                    <div class="detail-price-block">
+                        <span class="detail-price-amount">PKR <%= worker.price.toLocaleString() %></span>
+                        <span class="detail-price-unit">/ hour</span>
+                    </div>
+
+                    <!-- Hire CTA -->
+                    <% if (isAvailable) { %>
+                    <a
+                        href="/checkout?workerId=<%= worker._id %>"
+                        class="btn-hire-worker"
+                        id="hireWorkerBtn"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+                        Hire This Worker
+                    </a>
+                    <% } else { %>
+                    <button class="btn-hire-worker btn-hire-worker--disabled" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                        Currently Unavailable
+                    </button>
+                    <% } %>
+
+                    <a href="/workers" class="detail-browse-link">← Browse other workers</a>
+                </div>
+            </aside>
+
+            <!-- ── Right: Details Panel ── -->
+            <main class="detail-main">
+
+                <!-- Stats row -->
+                <div class="detail-stats-row">
+                    <div class="detail-stat">
+                        <span class="detail-stat-value"><%= worker.experience %></span>
+                        <span class="detail-stat-label">Years Exp.</span>
+                    </div>
+                    <div class="detail-stat">
+                        <span class="detail-stat-value"><%= worker.jobsDone %></span>
+                        <span class="detail-stat-label">Jobs Done</span>
+                    </div>
+                    <div class="detail-stat">
+                        <span class="detail-stat-value"><%= worker.rating.toFixed(1) %></span>
+                        <span class="detail-stat-label">Rating</span>
+                    </div>
+                    <div class="detail-stat">
+                        <span class="detail-stat-value"><%= worker.verified ? '✓' : '–' %></span>
+                        <span class="detail-stat-label">Verified</span>
+                    </div>
+                </div>
+
+                <!-- About -->
+                <div class="detail-panel">
+                    <h2 class="detail-panel-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r=".5" fill="currentColor"/></svg>
+                        About
+                    </h2>
+                    <p class="detail-panel-text">
+                        <% if (worker.description && worker.description.trim()) { %>
+                            <%= worker.description %>
+                        <% } else { %>
+                            No bio provided yet.
+                        <% } %>
+                    </p>
+                </div>
+
+                <!-- Details -->
+                <div class="detail-panel">
+                    <h2 class="detail-panel-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        Details
+                    </h2>
+                    <ul class="detail-info-list">
+                        <li class="detail-info-item">
+                            <span class="detail-info-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </span>
+                            <span class="detail-info-key">Location</span>
+                            <span class="detail-info-val"><%= worker.location %></span>
+                        </li>
+                        <li class="detail-info-item">
+                            <span class="detail-info-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </span>
+                            <span class="detail-info-key">Speciality</span>
+                            <span class="detail-info-val"><%= emoji %> <%= worker.category %></span>
+                        </li>
+                        <li class="detail-info-item">
+                            <span class="detail-info-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </span>
+                            <span class="detail-info-key">Experience</span>
+                            <span class="detail-info-val"><%= worker.experience %> year<%= worker.experience !== 1 ? 's' : '' %></span>
+                        </li>
+                        <li class="detail-info-item">
+                            <span class="detail-info-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            </span>
+                            <span class="detail-info-key">Jobs Completed</span>
+                            <span class="detail-info-val"><%= worker.jobsDone %></span>
+                        </li>
+                        <li class="detail-info-item">
+                            <span class="detail-info-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </span>
+                            <span class="detail-info-key">Hourly Rate</span>
+                            <span class="detail-info-val">PKR <%= worker.price.toLocaleString() %></span>
+                        </li>
+                        <li class="detail-info-item">
+                            <span class="detail-info-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            </span>
+                            <span class="detail-info-key">Verified</span>
+                            <span class="detail-info-val">
+                                <% if (worker.verified) { %>
+                                    <span class="detail-verified-inline">✓ Verified Professional</span>
+                                <% } else { %>
+                                    Not verified
+                                <% } %>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Availability notice -->
+                <% if (!isAvailable) { %>
+                <div class="detail-busy-notice">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>This worker is currently busy. Check back later or <a href="/workers">browse other workers</a>.</span>
+                </div>
+                <% } %>
+
+            </main>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3 class="footer-logo-text">WorkerFinder</h3>
+                <p>Connect with trusted and verified professionals in your area.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/workers">Find Workers</a></li>
+                    <li><a href="/#services">Services</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Copyright &copy; 2024 &middot; All rights reserved. | Developed by SP24-BCS-053</p>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/navbar.js"></script>
+</body>
+</html>
