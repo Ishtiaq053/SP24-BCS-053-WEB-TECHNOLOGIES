@@ -22,7 +22,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // Required for JSON request bodies in /api/v1 routes
+app.use(express.json()); // Required for JSON bodies in /api/v1 routes
 
 // ─── MongoDB Connection ────────────────────────────────────────────────────────
 let isDbConnected = false;
@@ -207,13 +207,13 @@ app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
 
 // ─── JWT REST API v1 (Lab Assignment 4) ─────────────────────────────────────
-// These routes return JSON ONLY and are fully independent of session auth.
+// JSON-only, fully independent of session auth
 app.use('/api/v1/auth',    apiAuthRoutes);
 app.use('/api/v1/workers', apiWorkerRoutes);
 app.use('/api/v1/orders',  apiOrderRoutes);
 app.use('/api/v1/user',    apiUserRoutes);
 
-// ─── API 404 Handler (must be after all /api/v1 mounts) ──────────────────────
+// ─── API 404 Handler ──────────────────────────────────────────────────────────────
 app.use('/api', (req, res) => {
     res.status(404).json({
         success: false,
