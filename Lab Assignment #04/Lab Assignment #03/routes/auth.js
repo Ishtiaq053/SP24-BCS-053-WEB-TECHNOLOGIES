@@ -49,13 +49,9 @@ router.post('/register', async (req, res) => {
             role:     'customer'
         });
 
-        // Auto login after register
-        req.session.userId   = user._id;
-        req.session.userName = user.name;
-        req.session.role     = user.role;
-
-        req.flash('success', `Welcome to WorkerFinder, ${user.name}! Your account has been created.`);
-        res.redirect('/workers');
+        // Redirect to login after successful registration
+        req.flash('success', `Account created successfully, ${user.name}! Please log in to continue.`);
+        res.redirect('/login');
 
     } catch (err) {
         console.error('Register error:', err.message);

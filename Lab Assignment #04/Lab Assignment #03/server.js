@@ -7,7 +7,8 @@ const flash        = require('connect-flash');
 
 const Worker       = require('./models/Worker');
 const authRoutes   = require('./routes/auth');
-const adminRoutes  = require('./routes/admin');
+const adminRoutes    = require('./routes/admin');
+const bookingRoutes  = require('./routes/bookings');
 const { isLoggedIn } = require('./middleware/auth');
 
 // ─── API v1 Routes (JWT — Lab Assignment 4) ───────────────────────────────────
@@ -202,6 +203,9 @@ app.get('/workers/:id', isLoggedIn, async (req, res) => {
 
 // ─── Auth Routes (/register, /login, /logout) ─────────────────────────────────
 app.use('/', authRoutes);
+
+// ─── Booking Routes (/bookings) ───────────────────────────────────────────────
+app.use('/bookings', bookingRoutes);
 
 // ─── Admin Routes (/admin) ────────────────────────────────────────────────────
 app.use('/admin', adminRoutes);

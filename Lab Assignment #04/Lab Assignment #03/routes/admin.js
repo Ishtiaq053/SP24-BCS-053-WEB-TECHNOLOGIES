@@ -3,6 +3,7 @@ const path     = require('path');
 const fs       = require('fs');
 const Worker   = require('../models/Worker');
 const User     = require('../models/User');
+const Booking  = require('../models/Booking');
 const { isLoggedIn, isAdmin } = require('../middleware/auth');
 const upload   = require('../middleware/upload');
 
@@ -35,14 +36,16 @@ function validateWorkerBody(body) {
 // ─── GET /admin ─ Dashboard ───────────────────────────────────────────────────
 router.get('/', async (req, res) => {
     try {
-        const [totalWorkers, totalUsers, availableWorkers, busyWorkers, verifiedWorkers, recentWorkers] =
+        const [totalWorkers, totalUsers, availableWorkers, busyWorkers, verifiedWorkers, recentWorkers, totalAppointments, recentBookings] =
             await Promise.all([
                 Worker.countDocuments(),
                 User.countDocuments(),
                 Worker.countDocuments({ stock: 1 }),
                 Worker.countDocuments({ stock: 0 }),
                 Worker.countDocuments({ verified: true }),
-                Worker.find().sort({ createdAt: -1 }).limit(10)
+                Worker.find().sort({ createdAt: -1 }).limit(10),
+                Booking.countDocuments(),
+                Booking.find().sort({ createdAt: -1 }).limit(5).lean()
             ]);
 
         res.render('admin/dashboard', {
@@ -52,7 +55,9 @@ router.get('/', async (req, res) => {
             availableWorkers,
             busyWorkers,
             verifiedWorkers,
-            recentWorkers
+            recentWorkers,
+            totalAppointments,
+            recentBookings
         });
     } catch (err) {
         console.error('Admin dashboard error:', err.message);
@@ -219,7 +224,7 @@ router.post('/workers/edit/:id', upload.single('image'), async (req, res) => {
     }
 });
 
-// ─── POST /admin/workers/delete/:id ─ Delete Worker ──────────────────────────
+// ─── POST /admin/workers/delete/:id ─ Delete Worker ───────────────────────────────────
 router.post('/workers/delete/:id', async (req, res) => {
     try {
         const worker = await Worker.findById(req.params.id);
@@ -241,6 +246,68 @@ router.post('/workers/delete/:id', async (req, res) => {
         console.error('Delete worker error:', err.message);
         req.flash('error', 'Failed to delete worker.');
         res.redirect('/admin/workers');
+    }
+});
+
+// ─── GET /admin/appointments ─ All Bookings ──────────────────────────────────────────
+router.get('/appointments', async (req, res) => {
+    try {
+        const bookings = await Booking.find()
+            .sort({ createdAt: -1 })
+            .lean();
+        res.render('admin/appointments', {
+            title:    'Appointments — WorkerFinder Admin',
+            bookings,
+            activePage: 'appointments'
+        });
+    } catch (err) {
+        console.error('Admin appointments error:', err.message);
+        req.flash('error', 'Failed to load appointments.');
+        res.redirect('/admin');
+    }
+});
+
+// ─── POST /admin/appointments/:id/status ─ Update Booking Status ─────────────────
+router.post('/appointments/:id/status', async (req, res) => {
+    const VALID = ['pending','confirmed','in-progress','completed','cancelled','rejected'];
+    try {
+        const { status } = req.body;
+        if (!VALID.includes(status)) {
+            req.flash('error', 'Invalid status value.');
+            return res.redirect('/admin/appointments');
+        }
+        const booking = await Booking.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true }
+        );
+        if (!booking) {
+            req.flash('error', 'Booking not found.');
+            return res.redirect('/admin/appointments');
+        }
+        req.flash('success', `Booking status updated to "${status}".`);
+        res.redirect('/admin/appointments');
+    } catch (err) {
+        console.error('Update booking status error:', err.message);
+        req.flash('error', 'Failed to update booking status.');
+        res.redirect('/admin/appointments');
+    }
+});
+
+// ─── POST /admin/appointments/:id/delete ─ Delete Booking ────────────────────────
+router.post('/appointments/:id/delete', async (req, res) => {
+    try {
+        const booking = await Booking.findByIdAndDelete(req.params.id);
+        if (!booking) {
+            req.flash('error', 'Booking not found.');
+            return res.redirect('/admin/appointments');
+        }
+        req.flash('success', 'Appointment deleted successfully.');
+        res.redirect('/admin/appointments');
+    } catch (err) {
+        console.error('Delete booking error:', err.message);
+        req.flash('error', 'Failed to delete appointment.');
+        res.redirect('/admin/appointments');
     }
 });
 
