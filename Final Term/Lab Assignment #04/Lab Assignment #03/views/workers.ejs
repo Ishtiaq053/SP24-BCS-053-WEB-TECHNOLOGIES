@@ -471,6 +471,7 @@
 
         <form method="POST" action="/bookings/create" id="booking-form">
             <input type="hidden" name="workerId" id="bm-worker-id">
+            <input type="hidden" name="bookedPrice" id="bm-booked-price">
 
             <div class="booking-form-grid">
                 <!-- Booking Date -->
@@ -529,6 +530,7 @@ let   bmHourlyRate = 0;
 function openBookingModal(id, name, category, price) {
     bmHourlyRate = price;
     bmWorkerIdInput.value = id;
+    document.getElementById('bm-booked-price').value = price;
     document.getElementById('bm-worker-name').textContent = name;
     document.getElementById('bm-category').textContent   = category;
     document.getElementById('bm-price').textContent      = 'PKR ' + price.toLocaleString();

@@ -10,7 +10,7 @@ const router = express.Router();
 // Protected: must be logged in. Validates, calculates, saves booking.
 router.post('/create', isLoggedIn, async (req, res) => {
     try {
-        const { workerId, bookingDate, hours, notes } = req.body;
+        const { workerId, bookingDate, hours, notes, bookedPrice } = req.body;
 
         // ── 1. Validate required fields ───────────────────────────────────────
         if (!workerId || !bookingDate || !hours) {
@@ -50,7 +50,13 @@ router.post('/create', isLoggedIn, async (req, res) => {
         }
 
         // ── 4. Calculate total server-side ────────────────────────────────────
-        const totalAmount = worker.price * parsedHours;
+        // Use the price the client sent (discounted or original).
+        // Clamp: cannot exceed worker's original price; must be a positive number.
+        const parsedBookedPrice = parseFloat(bookedPrice);
+        const effectivePrice = (!isNaN(parsedBookedPrice) && parsedBookedPrice > 0 && parsedBookedPrice <= worker.price)
+            ? parsedBookedPrice
+            : worker.price;
+        const totalAmount = effectivePrice * parsedHours;
 
         // ── 5. Save booking ───────────────────────────────────────────────────
         await Booking.create({
@@ -58,7 +64,7 @@ router.post('/create', isLoggedIn, async (req, res) => {
             customer: customer._id,
             workerName: worker.name,
             workerCategory: worker.category,
-            workerPrice: worker.price,
+            workerPrice: effectivePrice,
             customerName: customer.name,
             customerEmail: customer.email,
             bookingDate: selected,
