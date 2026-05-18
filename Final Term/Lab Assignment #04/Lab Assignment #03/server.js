@@ -5,10 +5,12 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo').MongoStore;
 const flash = require('connect-flash');
 
-const Worker = require('./models/Worker');
-const authRoutes = require('./routes/auth');
-const adminRoutes = require('./routes/admin');
+const ejsLayouts   = require('express-ejs-layouts');
+const Worker       = require('./models/Worker');
+const authRoutes   = require('./routes/auth');
+const adminRoutes  = require('./routes/admin');
 const bookingRoutes = require('./routes/bookings');
+const onsaleRoutes = require('./routes/onsale');
 const { isLoggedIn } = require('./middleware/auth');
 
 // ─── API v1 Routes (JWT — Lab Assignment 4) ───────────────────────────────────
@@ -93,6 +95,7 @@ const LIMIT = 8; // workers per page
 
 // GET /  — Landing page
 app.get('/', (req, res) => {
+    res.locals.layout = false;
     res.render('homepage');
 });
 
@@ -157,6 +160,7 @@ app.get('/workers', async (req, res) => {
             .limit(LIMIT);
 
         // 6. Render the view with all required variables
+        res.locals.layout = false;
         res.render('workers', {
             workers,
             currentPage,
@@ -182,6 +186,7 @@ app.get('/checkout', isLoggedIn, async (req, res) => {
     if (req.query.workerId) {
         try { worker = await Worker.findById(req.query.workerId); } catch (_) { }
     }
+    res.locals.layout = false;
     res.render('checkout', { title: 'Checkout — WorkerFinder', worker });
 });
 
@@ -193,6 +198,7 @@ app.get('/workers/:id', isLoggedIn, async (req, res) => {
             req.flash('warning', 'Worker not found.');
             return res.redirect('/workers');
         }
+        res.locals.layout = false;
         res.render('workers/details', { title: `${worker.name} — WorkerFinder`, worker });
     } catch (err) {
         // Invalid ObjectId format → treat as not found
@@ -209,6 +215,9 @@ app.use('/bookings', bookingRoutes);
 
 // ─── Admin Routes (/admin) ────────────────────────────────────────────────────
 app.use('/admin', adminRoutes);
+
+// ─── On-Sale Workers Route ────────────────────────────────────────────────────
+app.use('/onsale-workers', onsaleRoutes);
 
 // ─── JWT REST API v1 (Lab Assignment 4) ─────────────────────────────────────
 // JSON-only, fully independent of session auth

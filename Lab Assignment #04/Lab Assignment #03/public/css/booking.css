@@ -23,7 +23,10 @@
     line-height: 1;
     transition: color .2s;
 }
-.booking-modal-close:hover { color: var(--text, #f1f5f9); }
+
+.booking-modal-close:hover {
+    color: var(--text, #f1f5f9);
+}
 
 /* ── Modal header row ── */
 .booking-modal-header {
@@ -33,6 +36,7 @@
     margin-bottom: 1.25rem;
     color: var(--accent, #60a5fa);
 }
+
 .booking-modal-header .modal-title {
     margin: 0;
     font-size: 1.2rem;
@@ -40,30 +44,33 @@
 
 /* ── Worker summary inside modal ── */
 .booking-worker-summary {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(255, 255, 255, .08);
     border-radius: 10px;
     padding: 1rem 1.2rem;
     margin-bottom: 1.4rem;
 }
+
 .booking-worker-name {
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--text, #f1f5f9);
     margin: 0 0 .25rem;
 }
+
 .booking-worker-meta {
     font-size: .88rem;
     color: var(--text-muted, #94a3b8);
     margin: 0 0 .6rem;
 }
+
 .booking-avail-badge {
     display: inline-block;
     font-size: .72rem;
     font-weight: 600;
     padding: .2rem .65rem;
     border-radius: 20px;
-    background: rgba(34,197,94,.15);
+    background: rgba(34, 197, 94, .15);
     color: #4ade80;
     letter-spacing: .03em;
 }
@@ -75,17 +82,34 @@
     gap: 1rem;
     margin-bottom: 1rem;
 }
+
 @media (max-width: 480px) {
-    .booking-form-grid { grid-template-columns: 1fr; }
+    .booking-form-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ── Field ── */
-.booking-field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
-.booking-label { font-size: .83rem; font-weight: 600; color: var(--text-muted, #94a3b8); }
-.booking-label small { font-weight: 400; }
+.booking-field {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    margin-bottom: 1rem;
+}
+
+.booking-label {
+    font-size: .83rem;
+    font-weight: 600;
+    color: var(--text-muted, #94a3b8);
+}
+
+.booking-label small {
+    font-weight: 400;
+}
+
 .booking-input {
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .12);
     border-radius: 8px;
     padding: .65rem .9rem;
     color: var(--text, #f1f5f9);
@@ -95,12 +119,20 @@
     width: 100%;
     box-sizing: border-box;
 }
+
 .booking-input:focus {
     outline: none;
     border-color: var(--accent, #60a5fa);
 }
-.booking-input::placeholder { color: rgba(148,163,184,.5); }
-.booking-textarea { resize: vertical; min-height: 80px; }
+
+.booking-input::placeholder {
+    color: rgba(148, 163, 184, .5);
+}
+
+.booking-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
 
 /* Date input calendar icon colour fix */
 .booking-input[type="date"]::-webkit-calendar-picker-indicator {
@@ -113,14 +145,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(96,165,250,.08);
-    border: 1px solid rgba(96,165,250,.2);
+    background: rgba(96, 165, 250, .08);
+    border: 1px solid rgba(96, 165, 250, .2);
     border-radius: 8px;
     padding: .8rem 1rem;
     margin-bottom: 1.4rem;
 }
-.booking-total-label { font-size: .9rem; color: var(--text-muted, #94a3b8); font-weight: 500; }
-.booking-total-value { font-size: 1.15rem; font-weight: 700; color: var(--accent, #60a5fa); }
+
+.booking-total-label {
+    font-size: .9rem;
+    color: var(--text-muted, #94a3b8);
+    font-weight: 500;
+}
+
+.booking-total-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent, #60a5fa);
+}
 
 /* ── Modal action buttons ── */
 .booking-modal-actions {
@@ -128,6 +170,7 @@
     gap: .8rem;
     justify-content: flex-end;
 }
+
 .btn-booking-confirm {
     display: inline-flex;
     align-items: center;
@@ -142,6 +185,7 @@
     cursor: pointer;
     transition: background .2s, transform .15s;
 }
+
 .btn-booking-confirm:hover {
     background: #93c5fd;
     transform: translateY(-1px);
@@ -160,17 +204,41 @@
     text-transform: capitalize;
     white-space: nowrap;
 }
-.appt-badge--pending     { background: rgba(251,191,36,.15);  color: #fbbf24; }
-.appt-badge--confirmed   { background: rgba(96,165,250,.15);  color: #60a5fa; }
-.appt-badge--in-progress { background: rgba(167,139,250,.15); color: #a78bfa; }
-.appt-badge--completed   { background: rgba(52,211,153,.15);  color: #34d399; }
-.appt-badge--cancelled   { background: rgba(148,163,184,.12); color: #94a3b8; }
-.appt-badge--rejected    { background: rgba(248,113,113,.15); color: #f87171; }
+
+.appt-badge--pending {
+    background: rgba(251, 191, 36, .15);
+    color: #fbbf24;
+}
+
+.appt-badge--confirmed {
+    background: rgba(96, 165, 250, .15);
+    color: #60a5fa;
+}
+
+.appt-badge--in-progress {
+    background: rgba(167, 139, 250, .15);
+    color: #a78bfa;
+}
+
+.appt-badge--completed {
+    background: rgba(52, 211, 153, .15);
+    color: #34d399;
+}
+
+.appt-badge--cancelled {
+    background: rgba(148, 163, 184, .12);
+    color: #94a3b8;
+}
+
+.appt-badge--rejected {
+    background: rgba(248, 113, 113, .15);
+    color: #f87171;
+}
 
 /* ── Status select in admin appointments table ── */
 .appt-status-select {
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .12);
     border-radius: 6px;
     padding: .3rem .5rem;
     color: var(--text, #f1f5f9);
@@ -179,8 +247,18 @@
     cursor: pointer;
     margin-right: .4rem;
 }
-.appt-status-select:focus { outline: none; border-color: var(--accent, #60a5fa); }
+
+.appt-status-select:focus {
+    outline: none;
+    border-color: var(--accent, #60a5fa);
+}
 
 /* ── Teal stat card for appointments ── */
-.stat-card--teal { border-top: 3px solid #2dd4bf; }
-.stat-card--teal .stat-card-icon { color: #2dd4bf; background: rgba(45,212,191,.12); }
+.stat-card--teal {
+    border-top: 3px solid #2dd4bf;
+}
+
+.stat-card--teal .stat-card-icon {
+    color: #2dd4bf;
+    background: rgba(45, 212, 191, .12);
+}

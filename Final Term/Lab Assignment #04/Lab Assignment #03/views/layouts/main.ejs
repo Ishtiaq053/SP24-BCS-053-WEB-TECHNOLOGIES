@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' — WorkerFinder' : 'WorkerFinder' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/booking.css">
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+  <main class="layout-main">
+    <%- body %>
+  </main>
+  <footer class="layout-footer">
+    <div class="footer-inner">
+      <span>© 2024 WorkerFinder. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/workers">Find Workers</a>
+        <a href="/onsale-workers">🔥 On Discount</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

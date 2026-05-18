@@ -1,0 +1,250 @@
+/* ════════════════════════════════════════════════════════════════
+   BOOKING MODAL — WorkerFinder Green Design System
+   (light theme — matches workers page and onsale page)
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Booking modal box (wider than delete modal) ── */
+.booking-modal-box {
+    max-width: 520px;
+    width: 95%;
+    padding: 0;
+    position: relative;
+    text-align: left;
+    overflow: hidden;
+}
+
+/* ── Close button ── */
+.booking-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #9ca3af;
+    cursor: pointer;
+    line-height: 1;
+    transition: color .2s;
+    z-index: 2;
+}
+.booking-modal-close:hover { color: #374151; }
+
+/* ── Modal header row ── */
+.booking-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    color: #2a7a52;
+}
+.booking-modal-header .modal-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a1a2e;
+}
+
+/* ── Worker summary inside modal ── */
+.booking-worker-summary {
+    background: #e6f4ed;
+    border-bottom: 1px solid #c6e8d5;
+    padding: 14px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.booking-worker-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+}
+.booking-worker-meta {
+    font-size: 13px;
+    color: #555568;
+    margin: 0;
+}
+.booking-avail-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: #d1fae5;
+    color: #065f46;
+    letter-spacing: .03em;
+    margin-top: 2px;
+    width: fit-content;
+}
+
+/* ── Form area ── */
+.booking-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 20px 28px 0;
+}
+@media (max-width: 480px) { .booking-form-grid { grid-template-columns: 1fr; } }
+
+/* ── Field ── */
+.booking-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 28px;
+    margin-bottom: 14px;
+}
+/* Fields inside the grid don't need horizontal padding */
+.booking-form-grid .booking-field {
+    padding: 0;
+    margin-bottom: 0;
+}
+/* Notes wrapper — strip wrapper padding; child .booking-field handles it */
+.booking-notes-wrap { padding: 0; }
+.booking-notes-wrap .booking-field { padding: 0 28px; }
+
+.booking-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #9090a0;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+.booking-label small { font-weight: 400; text-transform: none; }
+
+.booking-input {
+    background: #f8f9fa;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #1a1a2e;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color .2s, box-shadow .2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+.booking-input:focus {
+    outline: none;
+    border-color: #2a7a52;
+    box-shadow: 0 0 0 3px rgba(42,122,82,.1);
+    background: #fff;
+}
+.booking-input::placeholder { color: #9ca3af; }
+
+/* standalone notes field spacing */
+.booking-field:has(.booking-textarea) { padding: 0 28px; }
+
+.booking-textarea { resize: vertical; min-height: 80px; }
+
+/* ── Live total row ── */
+.booking-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e6f4ed;
+    border-top: 1px solid #c6e8d5;
+    border-bottom: 1px solid #c6e8d5;
+    padding: 12px 28px;
+    margin: 14px 0;
+}
+.booking-total-label {
+    font-size: 13px;
+    color: #555568;
+    font-weight: 600;
+}
+.booking-total-value {
+    font-size: 17px;
+    font-weight: 800;
+    color: #2a7a52;
+}
+
+/* ── Modal action buttons ── */
+.booking-modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding: 0 28px 24px;
+}
+
+.btn-booking-confirm {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #2a7a52;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .2s, transform .15s, box-shadow .15s;
+}
+.btn-booking-confirm:hover {
+    background: #1d5c3d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(42,122,82,.3);
+}
+
+/* ── Override btn-modal-cancel for booking context ── */
+.booking-modal-actions .btn-modal-cancel {
+    flex: none;
+    padding: 11px 20px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    color: #555568;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color .18s, color .18s;
+}
+.booking-modal-actions .btn-modal-cancel:hover { border-color: #2a7a52; color: #2a7a52; }
+
+/* ════════════════════════════════════════════════════════════════
+   APPOINTMENT STATUS BADGES
+   ════════════════════════════════════════════════════════════════ */
+.appt-badge {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 600;
+    padding: .22rem .65rem;
+    border-radius: 20px;
+    letter-spacing: .03em;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+.appt-badge--pending    { background: #fef9c3; color: #854d0e; }
+.appt-badge--confirmed  { background: #dbeafe; color: #1e40af; }
+.appt-badge--in-progress { background: #ede9fe; color: #6d28d9; }
+.appt-badge--completed  { background: #d1fae5; color: #065f46; }
+.appt-badge--cancelled  { background: #f3f4f6; color: #6b7280; }
+.appt-badge--rejected   { background: #fee2e2; color: #991b1b; }
+
+/* ── Status select in admin appointments table ── */
+.appt-status-select {
+    background: #f8f9fa;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 6px;
+    padding: .3rem .5rem;
+    color: #1a1a2e;
+    font-size: .78rem;
+    font-family: inherit;
+    cursor: pointer;
+    margin-right: .4rem;
+}
+.appt-status-select:focus { outline: none; border-color: #2a7a52; }
+
+/* ── Teal stat card for appointments ── */
+.stat-card--teal { border-top: 3px solid #2a7a52; }
+.stat-card--teal .stat-card-icon { color: #2a7a52; background: rgba(42,122,82,.1); }
+
+/* ── Date input calendar icon ── */
+.booking-input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: .6;
+}

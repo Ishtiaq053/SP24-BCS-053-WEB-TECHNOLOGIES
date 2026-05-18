@@ -1,0 +1,80 @@
+<%
+  // ── Collect only the flash types we actively use ──────────────────────────
+  const _success = (typeof success !== 'undefined' && success) ? success : [];
+  const _error   = (typeof error   !== 'undefined' && error)   ? error   : [];
+  const _warning = (typeof warning !== 'undefined' && warning) ? warning : [];
+
+  // Combine into one ordered list (success first, then warning, then error)
+  const _allFlash = [
+    ..._success.map(m => ({ type: 'success', msg: m })),
+    ..._warning.map(m => ({ type: 'warning', msg: m })),
+    ..._error  .map(m => ({ type: 'error',   msg: m }))
+  ];
+%>
+
+<% if (_allFlash.length > 0) { %>
+<div class="wf-flash-stack" id="wfFlashStack" aria-live="polite">
+  <% _allFlash.forEach(function(f, idx) { %>
+  <%
+    const icons = {
+      success: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="20 6 9 17 4 12"/></svg>',
+      error:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+      warning: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>'
+    };
+    const autoDismiss = { success: 4000, error: 6000, warning: 5000 };
+  %>
+  <div
+    class="wf-flash wf-flash--<%= f.type %>"
+    role="alert"
+    data-dismiss="<%= autoDismiss[f.type] %>"
+  >
+    <div class="wf-flash__progress"></div>
+    <div class="wf-flash__body">
+      <span class="wf-flash__icon"><%- icons[f.type] %></span>
+      <span class="wf-flash__msg"><%= f.msg %></span>
+      <button
+        class="wf-flash__close"
+        onclick="wfDismissFlash(this.closest('.wf-flash'))"
+        aria-label="Dismiss"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <% }); %>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  function wfDismissFlash(el) {
+    if (!el || el.classList.contains('wf-flash--leaving')) return;
+    el.classList.add('wf-flash--leaving');
+    setTimeout(function () { if (el.parentNode) el.remove(); }, 380);
+  }
+
+  window.wfDismissFlash = wfDismissFlash;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.wf-flash[data-dismiss]').forEach(function (el) {
+      var delay = parseInt(el.getAttribute('data-dismiss'), 10) || 4000;
+      var bar   = el.querySelector('.wf-flash__progress');
+
+      if (bar) {
+        bar.style.transition = 'width ' + delay + 'ms linear';
+        bar.getBoundingClientRect(); // force reflow
+        bar.style.width = '0%';
+      }
+
+      var timer = setTimeout(function () { wfDismissFlash(el); }, delay);
+
+      el.addEventListener('mouseenter', function () { clearTimeout(timer); });
+      el.addEventListener('mouseleave', function () {
+        timer = setTimeout(function () { wfDismissFlash(el); }, 1500);
+      });
+    });
+  });
+})();
+</script>
+<% } %>

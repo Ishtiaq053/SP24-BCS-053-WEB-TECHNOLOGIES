@@ -1,0 +1,33 @@
+<!-- ═══ ADMIN TOP BAR ═══ -->
+<header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <!-- Logo / Brand -->
+        <a href="/admin" class="admin-topbar-brand">
+            <img
+                src="/images/favicon.png"
+                alt="WorkerFinder"
+                class="admin-topbar-img"
+                onerror="this.style.display='none'"
+            >
+            <span class="admin-topbar-title">WorkerFinder</span>
+            <span class="admin-topbar-badge">Admin</span>
+        </a>
+    </div>
+
+    <div class="admin-topbar-right">
+        <!-- Admin greeting — professional pill -->
+        <div class="admin-topbar-greeting">
+            <span class="admin-topbar-greeting-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </span>
+            <span class="admin-topbar-greeting-name">
+                Hi, <strong><%= currentUser ? currentUser.name.split(' ')[0] : 'Admin' %></strong>
+            </span>
+            <span class="admin-topbar-role-dot"></span>
+            <span class="admin-topbar-role-label">Administrator</span>
+        </div>
+    </div>
+</header>
