@@ -219,6 +219,13 @@ router.post('/workers/edit/:id', upload.single('image'), async (req, res) => {
         worker.verified    = req.body.verified === 'true';
         worker.image       = imagePath;
 
+        // ── Discount fields ──────────────────────────────────────────
+        const newOnSale = req.body.isOnSale === 'true';
+        const newPct    = Number(req.body.discountPercent) || 0;
+        worker.isOnSale       = newOnSale;
+        worker.discountPercent = newOnSale && newPct >= 1 && newPct <= 99 ? newPct : 0;
+        if (!newOnSale) worker.discountPercent = 0;
+
         await worker.save();
 
         req.flash('success', `Worker "${worker.name}" updated successfully!`);
@@ -319,4 +326,42 @@ router.post('/appointments/:id/delete', async (req, res) => {
     }
 });
 
+// ─── POST /admin/workers/:id/discount ─ Apply / Update / Remove Discount ──────
+router.post('/workers/:id/discount', async (req, res) => {
+    try {
+        const worker = await Worker.findById(req.params.id);
+        if (!worker) {
+            req.flash('error', 'Worker not found.');
+            return res.redirect('/admin/workers');
+        }
+
+        const action = req.body.action; // 'apply' | 'remove'
+
+        if (action === 'remove') {
+            worker.isOnSale      = false;
+            worker.discountPercent = 0;
+            await worker.save();
+            req.flash('success', `Discount removed from "${worker.name}".`);
+        } else {
+            // apply or update
+            const pct = Number(req.body.discountPercent);
+            if (isNaN(pct) || pct < 1 || pct > 99) {
+                req.flash('error', 'Discount must be between 1% and 99%.');
+                return res.redirect('/admin/workers');
+            }
+            worker.isOnSale        = true;
+            worker.discountPercent = pct;
+            await worker.save();
+            req.flash('success', `${pct}% discount applied to "${worker.name}".`);
+        }
+
+        res.redirect('/admin/workers');
+    } catch (err) {
+        console.error('Discount update error:', err.message);
+        req.flash('error', 'Failed to update discount.');
+        res.redirect('/admin/workers');
+    }
+});
+
 module.exports = router;
+

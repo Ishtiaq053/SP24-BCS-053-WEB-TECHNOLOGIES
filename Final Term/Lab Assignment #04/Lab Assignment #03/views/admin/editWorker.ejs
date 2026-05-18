@@ -224,6 +224,46 @@
                     </div>
                 </div>
 
+                </div>
+
+                <!-- ── Discount Management ── -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        Discount Settings
+                    </h3>
+                    <% const curOnSale = Object.keys(old).length ? old.isOnSale === 'true' : worker.isOnSale; %>
+                    <% const curPct    = Object.keys(old).length ? (old.discountPercent || 0) : (worker.discountPercent || 0); %>
+                    <div class="dm-discount-card">
+                        <div class="form-grid-2">
+                            <!-- Toggle -->
+                            <div class="admin-form-group">
+                                <label for="isOnSale" class="admin-form-label">Discount Status</label>
+                                <select id="isOnSale" name="isOnSale" class="admin-form-input admin-form-select" onchange="toggleDiscountField()">
+                                    <option value="false" <%= !curOnSale ? 'selected' : '' %>>No Discount</option>
+                                    <option value="true"  <%= curOnSale  ? 'selected' : '' %>>Active Discount (%)</option>
+                                </select>
+                                <small style="color:#64748b;margin-top:4px;display:block;">Setting to Active adds worker to the On Discount page.</small>
+                            </div>
+                            <!-- Percentage -->
+                            <div class="admin-form-group" id="discount-pct-group" style="<%= curOnSale ? '' : 'opacity:.45;pointer-events:none;' %>">
+                                <label for="discountPercent" class="admin-form-label">Discount % <span style="color:#6b7280;font-weight:400;">(1–99)</span></label>
+                                <input
+                                    type="number"
+                                    id="discountPercent"
+                                    name="discountPercent"
+                                    class="admin-form-input"
+                                    min="1" max="99" step="1"
+                                    placeholder="e.g. 20"
+                                    value="<%= curPct || '' %>"
+                                    oninput="updateDiscountPreview()"
+                                >
+                                <p id="discount-preview" style="font-size:12px;color:var(--green);margin-top:6px;font-weight:600;min-height:18px;"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ── Form Actions ── -->
                 <div class="form-actions">
                     <a href="/admin/workers" class="btn-form-cancel">Cancel</a>
@@ -318,8 +358,45 @@ form.addEventListener('submit', function(e) {
         showError(rating, 'Rating must be between 1 and 5.'); valid = false;
     } else clearError(rating);
 
+    // Discount validation
+    const isOnSale = document.getElementById('isOnSale').value === 'true';
+    const pctEl    = document.getElementById('discountPercent');
+    if (isOnSale) {
+        const pct = Number(pctEl.value);
+        if (!pctEl.value || isNaN(pct) || pct < 1 || pct > 99) {
+            showError(pctEl, 'Discount must be between 1% and 99%.'); valid = false;
+        } else clearError(pctEl);
+    } else {
+        clearError(pctEl);
+    }
+
     if (!valid) e.preventDefault();
 });
+
+/* ── Discount UI helpers ── */
+function toggleDiscountField() {
+    const on  = document.getElementById('isOnSale').value === 'true';
+    const grp = document.getElementById('discount-pct-group');
+    grp.style.opacity       = on ? '1' : '.45';
+    grp.style.pointerEvents = on ? 'auto' : 'none';
+    updateDiscountPreview();
+}
+
+function updateDiscountPreview() {
+    const on    = document.getElementById('isOnSale').value === 'true';
+    const pct   = parseInt(document.getElementById('discountPercent').value, 10);
+    const price = parseFloat(document.getElementById('price').value);
+    const el    = document.getElementById('discount-preview');
+    if (on && !isNaN(pct) && pct >= 1 && pct <= 99 && !isNaN(price) && price > 0) {
+        const discounted = Math.round(price * (1 - pct / 100));
+        el.textContent = `Discounted rate: PKR ${discounted.toLocaleString()} / hr`;
+    } else {
+        el.textContent = '';
+    }
+}
+
+document.getElementById('price').addEventListener('input', updateDiscountPreview);
+updateDiscountPreview();
 
 function showError(input, msg) {
     input.classList.add('input-error');

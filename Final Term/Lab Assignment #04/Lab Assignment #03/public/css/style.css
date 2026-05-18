@@ -1963,6 +1963,57 @@ a.btn-view-profile--guest:hover {
 }
 .btn-tbl-delete:hover { background: #dc2626; color: #ffffff; border-color: #dc2626; }
 
+/* ── Discount action button (green outline) ── */
+.btn-tbl-discount {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 11px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; font-family: inherit;
+    background: #e6f4ed; color: var(--green); border: 1px solid #b2dfca;
+    cursor: pointer; transition: background .15s, color .15s;
+}
+.btn-tbl-discount:hover { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* ── Discount badge in table Discount column ── */
+.discount-badge-admin {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #e6f4ed; color: var(--green);
+    border: 1px solid #b2dfca; border-radius: 20px;
+    font-size: 11px; font-weight: 700; padding: 3px 9px;
+    letter-spacing: .03em; white-space: nowrap;
+}
+.no-discount-dash { color: #cbd5e1; font-size: 15px; font-weight: 400; }
+
+/* ── Discount Management Modal ── */
+.discount-modal-box { max-width: 420px; width: 95%; text-align: left; }
+.discount-modal-header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 16px; margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+.discount-modal-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: #e6f4ed; color: var(--green);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.dm-status-strip {
+    display: flex; align-items: center;
+    background: var(--bg); border-radius: 8px;
+    padding: 10px 14px; margin-bottom: 16px;
+    border: 1px solid var(--border);
+}
+.dm-field { margin-bottom: 18px; }
+.dm-label {
+    display: block; font-size: 12px; font-weight: 700;
+    color: #64748b; text-transform: uppercase; letter-spacing: .4px;
+    margin-bottom: 8px;
+}
+.dm-input-row { display: flex; align-items: center; gap: 10px; }
+.dm-actions {
+    display: flex; gap: 10px; justify-content: flex-end;
+    padding-top: 8px; border-top: 1px solid var(--border);
+    margin-top: 8px;
+}
+
 /* ─── Delete Confirmation Modal ─────────────────────────────────── */
 .modal-overlay {
     position: fixed; inset: 0; z-index: 9999;
@@ -2046,6 +2097,13 @@ a.btn-view-profile--guest:hover {
     font-size: 14px; font-weight: 700; color: #0f1929;
     margin-bottom: 18px; padding-bottom: 10px;
     border-bottom: 2px solid #f1f5f9; letter-spacing: -.2px;
+    display: flex; align-items: center;
+}
+
+/* Discount card inside form section */
+.dm-discount-card {
+    background: #f0faf5; border: 1px solid #b2dfca;
+    border-radius: 10px; padding: 18px 20px;
 }
 
 /* 2-column responsive grid */

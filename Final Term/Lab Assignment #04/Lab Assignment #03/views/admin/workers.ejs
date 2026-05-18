@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/booking.css">
 </head>
 <body>
 
@@ -54,6 +55,7 @@
                             <th>Jobs</th>
                             <th>Status</th>
                             <th>Verified</th>
+                            <th>Discount</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -98,16 +100,35 @@
                                         <span class="unverified-dash" title="Not verified">–</span>
                                     <% } %>
                                 </td>
+                                <td>
+                                    <% if (worker.isOnSale) { %>
+                                        <span class="discount-badge-admin">
+                                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                            <%= worker.discountPercent %>% OFF
+                                        </span>
+                                    <% } else { %>
+                                        <span class="no-discount-dash">—</span>
+                                    <% } %>
+                                </td>
                                 <td class="table-actions">
                                     <a href="/admin/workers/edit/<%= worker._id %>" class="btn-tbl-edit" title="Edit worker" id="edit-<%= worker._id %>">
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                         Edit
                                     </a>
                                     <button
+                                        class="btn-tbl-discount"
+                                        title="Manage discount"
+                                        id="discount-<%= worker._id %>"
+                                        onclick="openDiscountModal('<%= worker._id %>', '<%= worker.name.replace(/'/g, "\\'") %>', <%= worker.isOnSale %>, <%= worker.discountPercent %>)"
+                                    >
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                        %
+                                    </button>
+                                    <button
                                         class="btn-tbl-delete"
                                         title="Delete worker"
                                         id="delete-<%= worker._id %>"
-                                        onclick="openDeleteModal('<%= worker._id %>', '<%= worker.name.replace(/'/g, '\\\'') %>')"
+                                        onclick="openDeleteModal('<%= worker._id %>', '<%= worker.name.replace(/'/g, "\\'") %>')"
                                     >
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                                         Delete
@@ -151,6 +172,66 @@
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════
+     DISCOUNT MANAGEMENT MODAL
+     ═══════════════════════════════════════════════════ -->
+<div id="discount-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="dm-modal-title">
+    <div class="modal-box discount-modal-box">
+        <div class="discount-modal-header">
+            <div class="discount-modal-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div>
+                <h2 class="modal-title" id="dm-modal-title" style="margin:0;font-size:17px;">Manage Discount</h2>
+                <p id="dm-worker-name" style="margin:0;font-size:13px;color:#64748b;"></p>
+            </div>
+        </div>
+
+        <!-- Current status strip -->
+        <div id="dm-status-strip" class="dm-status-strip"></div>
+
+        <!-- Apply / Update form -->
+        <form id="discount-form" method="POST" action="">
+            <input type="hidden" name="action" value="apply">
+            <div class="dm-field">
+                <label for="dm-pct-input" class="dm-label">Discount Percentage <span style="color:#6b7280;font-weight:400;">(1 – 99%)</span></label>
+                <div class="dm-input-row">
+                    <input
+                        type="number"
+                        id="dm-pct-input"
+                        name="discountPercent"
+                        class="booking-input"
+                        min="1" max="99" step="1"
+                        placeholder="e.g. 20"
+                        required
+                        style="width:130px;"
+                    >
+                    <span style="font-size:22px;font-weight:800;color:var(--green);">%</span>
+                </div>
+                <p id="dm-preview" style="font-size:12px;color:var(--green);margin-top:6px;font-weight:600;"></p>
+            </div>
+            <div class="dm-actions">
+                <button type="button" class="btn-modal-cancel" onclick="closeDiscountModal()">Cancel</button>
+                <button type="submit" class="btn-booking-confirm" id="dm-apply-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Apply Discount
+                </button>
+            </div>
+        </form>
+
+        <!-- Remove form -->
+        <form id="remove-discount-form" method="POST" action="" style="margin-top:10px;display:none;">
+            <input type="hidden" name="action" value="remove">
+            <div class="dm-actions" style="justify-content:flex-start;">
+                <button type="submit" class="btn-tbl-delete" style="padding:9px 18px;font-size:13px;border-radius:8px;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Remove Discount
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script src="/js/navbar.js"></script>
 <script>
 /* ── Delete Modal Logic ─────────────────────────────── */
@@ -164,7 +245,6 @@ function openDeleteModal(id, name) {
     form.action = `/admin/workers/delete/${id}`;
     overlay.classList.add('modal-visible');
     document.body.style.overflow = 'hidden';
-    // Focus trap
     setTimeout(() => document.getElementById('modal-cancel-btn').focus(), 100);
 }
 
@@ -173,16 +253,63 @@ function closeDeleteModal() {
     document.body.style.overflow = '';
 }
 
-// Close on overlay click
-overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) closeDeleteModal();
+overlay.addEventListener('click', e => { if (e.target === overlay) closeDeleteModal(); });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('modal-visible')) closeDeleteModal();
 });
 
-// Close on Escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && overlay.classList.contains('modal-visible')) {
-        closeDeleteModal();
+/* ── Discount Modal Logic ────────────────────────────── */
+const dmOverlay     = document.getElementById('discount-modal-overlay');
+const dmForm        = document.getElementById('discount-form');
+const rmForm        = document.getElementById('remove-discount-form');
+const dmPctInput    = document.getElementById('dm-pct-input');
+const dmPreview     = document.getElementById('dm-preview');
+const dmStatus      = document.getElementById('dm-status-strip');
+const dmApplyBtn    = document.getElementById('dm-apply-btn');
+let   dmWorkerPrice = 0;
+
+function openDiscountModal(id, name, isOnSale, currentPct) {
+    document.getElementById('dm-worker-name').textContent = name;
+    dmForm.action   = `/admin/workers/${id}/discount`;
+    rmForm.action   = `/admin/workers/${id}/discount`;
+    rmForm.style.display = isOnSale ? 'block' : 'none';
+
+    if (isOnSale) {
+        dmStatus.innerHTML = `<span class="discount-badge-admin" style="font-size:13px;padding:5px 12px;">Currently: ${currentPct}% OFF</span>`;
+        dmStatus.style.display = 'flex';
+        dmPctInput.value = currentPct;
+        dmApplyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Update Discount';
+    } else {
+        dmStatus.innerHTML = '<span style="font-size:12px;color:#64748b;">No active discount.</span>';
+        dmStatus.style.display = 'flex';
+        dmPctInput.value = '';
+        dmApplyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Apply Discount';
     }
+
+    updatePreview();
+    dmOverlay.classList.add('modal-visible');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => dmPctInput.focus(), 100);
+}
+
+function closeDiscountModal() {
+    dmOverlay.classList.remove('modal-visible');
+    document.body.style.overflow = '';
+}
+
+function updatePreview() {
+    const pct = parseInt(dmPctInput.value, 10);
+    if (!isNaN(pct) && pct >= 1 && pct <= 99) {
+        dmPreview.textContent = `Workers with this discount will appear in the On Discount page.`;
+    } else {
+        dmPreview.textContent = '';
+    }
+}
+
+dmPctInput.addEventListener('input', updatePreview);
+dmOverlay.addEventListener('click', e => { if (e.target === dmOverlay) closeDiscountModal(); });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && dmOverlay.classList.contains('modal-visible')) closeDiscountModal();
 });
 </script>
 </body>
